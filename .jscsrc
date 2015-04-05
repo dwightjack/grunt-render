@@ -1,0 +1,11 @@
+{
+    "preset": "airbnb",
+    "validateLineBreaks": "LF",
+    "validateIndentation": 4,
+    "disallowSpacesInAnonymousFunctionExpression": null,
+    "disallowSpacesInFunctionExpression": null,
+	"disallowMultipleLineBreaks": null,
+	"requireLineFeedAtFileEnd": null,
+	"requireMultipleVarDecl", "onevar",
+    "excludeFiles": ["node_modules/**", "tmp/**"]
+}
