@@ -20,7 +20,7 @@ grunt.loadNpmTasks('grunt-render');
 ## The "render" task
 
 ### Overview
-In your project's Gruntfile, add a section named `render` to the data object passed into `grunt.initConfig()`.
+In your project's Gruntfile, add a section named `tmpl_render` or `render` (quick alias) to the data object passed into `grunt.initConfig()`.
 
 ```js
 grunt.initConfig({
@@ -183,5 +183,8 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+0.0.3 - Renamed to `tmpl_render` keeping `render` as alias name
+
 0.0.2 - Docs and tests
+
 0.0.1 - Initial release
