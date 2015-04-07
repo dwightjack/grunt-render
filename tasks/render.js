@@ -1,8 +1,8 @@
 /*
- * grunt-ejs-render
- * https://github.com/dwightjack/grunt-ejs-render
+ * grunt-render
+ * https://github.com/dwightjack/grunt-render
  *
- * Copyright (c) 2013 Marco Solazzi
+ * Copyright (c) 2015 Marco Solazzi
  * Licensed under the MIT license.
  */
 
@@ -13,29 +13,26 @@ module.exports = function(grunt) {
     var path = require('path'),
         _ = require('lodash');
 
-        //add `underscore.string` for deprecated `grunt.util._` compat
-        _.str = require('underscore.string');
-        _.mixin(_.str.exports());
+    _.str = require('underscore.string');
+    _.mixin(_.str.exports());
 
     grunt.registerMultiTask('render', 'Renders a template to plain HTML', function() {
         var options = this.options({
-                setup: _.noop,
                 render: _.identity,
                 data: {},
                 config: {}
             }),
+            opts,
             datapath;
 
-
-
-        if ( _.isArray(options.data) ) {
+        if (_.isArray(options.data)) {
 
             datapath = [].concat(options.data);
             datapath = _(datapath)
                         .map(function(filepath) {
                             return grunt.file.expand({
                                 filter: function(src) {
-                                    return grunt.file.isFile(src) && (path.extname(src) === '.json');
+                                    return grunt.file.isFile(src) && (path.extname(src) === '.json' || path.extname(src) === '.yml');
                                 }
                             }, grunt.config.process(filepath));
                         })
@@ -45,9 +42,20 @@ module.exports = function(grunt) {
 
             options.data = {};
             datapath.forEach(function (file) {
-                var filename = path.basename(file, '.json');
-                var keyName = _.camelize( _.slugify(filename) );
-                options.data[keyName] = grunt.file.readJSON(file);
+                var fnName = 'readJSON',
+                    filename,
+                    keyName;
+
+                if (path.extname(file) === '.json') {
+                    filename = path.basename(file, '.json');
+                } else {
+                    filename = path.basename(file, '.yml');
+                    fnName = 'readYAML';
+                }
+
+                keyName = _.camelize(_.slugify(filename));
+
+                options.data[keyName] = grunt.file[fnName](file);
             });
 
 
@@ -55,14 +63,16 @@ module.exports = function(grunt) {
             options.data = options.data();
         }
 
-        if (_.isFunction(options.setup)) {
-            options.config = _.result(options, 'config');
-        }
+        options.config = _.result(options, 'config');
+
+        opts = _.clone(options);
+
+        delete opts.render;
 
         this.files.forEach(function(file) {
             var contents = file.src.map(function(filepath) {
                 if (grunt.file.exists(filepath)) {
-                    return options.render(grunt.file.read(filepath), filepath, options);
+                    return options.render(grunt.file.read(filepath), filepath, opts);
                 } else {
                     grunt.log.warn('File "' + filepath + '" not found.');
                     return '';

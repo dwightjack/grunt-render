@@ -9,6 +9,7 @@
 'use strict';
 
 var ejs = require('ejs');
+var swig = require('swig');
 
 
 module.exports = function(grunt) {
@@ -19,16 +20,16 @@ module.exports = function(grunt) {
             all: [
                 'Gruntfile.js',
                 'tasks/*.js',
-                '<%= nodeunit.tests %>',
+                '<%= nodeunit.tests %>'
             ],
             options: {
-                jshintrc: '.jshintrc',
-            },
+                jshintrc: '.jshintrc'
+            }
         },
 
         // Before generating any new files, remove any previously-created files.
         clean: {
-            tests: ['tmp'],
+            tests: ['tmp']
         },
 
         // Configuration to be run (and then tested).
@@ -37,7 +38,7 @@ module.exports = function(grunt) {
                 options: {
                 },
                 files: {
-                    'tmp/default_options.html': ['test/fixtures/default_options.html'],
+                    'tmp/default_options.html': ['test/fixtures/default_options.html']
                 }
             },
 
@@ -46,19 +47,43 @@ module.exports = function(grunt) {
                     data: ['test/fixtures/data/colors.json'],
                     render: function (src, filepath, options) {
                         return ejs.render(src, options.data || {}, options.config);
-
                     }
                 },
                 files: {
-                    'tmp/ejs.html': ['test/fixtures/ejs.ejs'],
+                    'tmp/ejs.html': ['test/fixtures/ejs.ejs']
+                }
+            },
+
+            yaml: {
+                options: {
+                    data: ['test/fixtures/data/colors.yml'],
+                    render: function (src, filepath, options) {
+                        return ejs.render(src, options.data || {}, options.config);
+                    }
+                },
+                files: {
+                    'tmp/yaml.html': ['test/fixtures/yaml.ejs']
+                }
+            },
+            swig: {
+                options: {
+                    data: {
+                        authors: ['Paul', 'Jim', 'Jane']
+                    },
+                    render: function (src, filepath, options) {
+                        return swig.render(src, {locals: options.data});
+                    }
+                },
+                files: {
+                    'tmp/swig.html': ['test/fixtures/swig.swig']
                 }
             }
         },
 
         // Unit tests.
         nodeunit: {
-            tests: ['test/*_test.js'],
-        },
+            tests: ['test/*_test.js']
+        }
 
     });
 

@@ -1,4 +1,4 @@
-# grunt-render WIP
+# grunt-render
 
 > Template agnostic HTML rendering task
 
@@ -37,7 +37,101 @@ grunt.initConfig({
 
 ### Options
 
-_coming soon_
+#### options.data
+Type: `Object|Array|Function`
+Default value: `{}`
+
+An object containing dynamic data to be passed to templates.
+
+If data is a function, actual data passed to template is result of that function.
+
+You may also pass an array of JSON or YAML file paths (any Grunt compatible globbing and template syntax is supported). `options.data` will be populated with files' contents.
+
+```js
+grunt.initConfig({
+  render: {
+    first_target: {
+    options: {
+        data: ['path/to/my-file.json', 'path/to/my-other-file.yml']
+      }
+    },
+    second_target: {
+      options: {
+        data: { prop: 'my test'}
+      }
+    },
+    third_target: {
+      options: {
+        data: function () {
+          return { prop: 'my test'};
+        }
+      }
+    }
+  }
+})
+```
+
+To access data from inside a template use `data.` namespace:
+
+When filepaths are provided, filenames are processed to create new namespaces:
+
+```
+<!-- EJS example: -->
+<!--  read from path/to/my-file.json -->
+<p><%= myFile.whatever %></p>
+
+<!-- read from path/to/my-other-file.json -->
+<p><%= myOtherFile.whateveragain %></p>
+```
+
+#### options.config
+Type: `Object|Function`
+Default value: `{}`
+
+An object or function returning an object with configuration options to be passed to the rendering engine.
+
+```js
+grunt.initConfig({
+  render: {
+    ejs: {
+      config: {
+        delimiter: '?' //use <?= color ?> inside template
+      },
+      data: {color: 'red' },
+      render: function (src, filepath, options) {
+          return ejs.render(src, options.data || {}, options.config);
+      }
+    }
+  }
+})
+```
+
+#### options.render
+Type: `|Function`
+Default value: `_.identity`
+
+Template parser function to be executed on each source file. Will receive 3 arguments: source file contents, file path and tasks' parsed options.
+
+```js
+
+//EJS rendering
+var ejs = require('ejs');
+
+grunt.initConfig({
+  render: {
+    ejs: {
+      options: {
+        render: function (src, filepath, options) {
+            return ejs.render(src, options.data || {}, options.config);
+        }
+      },
+      files: {
+        'dest/index.html': ['src/index.ejs'],
+      }
+  }
+  }
+});
+```
 
 ### Usage Examples
 
@@ -68,8 +162,9 @@ grunt.initConfig({
   render: {
     ejs: {
       options: {
-        data: {
-          key: 'value'
+        data: ['fixtures/*.json'],
+        config: {
+          delimiter: '?' //use <?= color ?> inside template
         },
         render: function (src, filepath, options) {
             return ejs.render(src, options.data || {}, options.config);
@@ -88,4 +183,5 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+0.0.2 - Docs and tests
 0.0.1 - Initial release
