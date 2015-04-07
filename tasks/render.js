@@ -16,7 +16,8 @@ module.exports = function(grunt) {
     _.str = require('underscore.string');
     _.mixin(_.str.exports());
 
-    grunt.registerMultiTask('render', 'Renders a template to plain HTML', function() {
+
+    function renderTmpl() {
         var options = this.options({
                 render: _.identity,
                 data: {},
@@ -29,16 +30,16 @@ module.exports = function(grunt) {
 
             datapath = [].concat(options.data);
             datapath = _(datapath)
-                        .map(function(filepath) {
-                            return grunt.file.expand({
-                                filter: function(src) {
-                                    return grunt.file.isFile(src) && (path.extname(src) === '.json' || path.extname(src) === '.yml');
-                                }
-                            }, grunt.config.process(filepath));
-                        })
-                        .flatten()
-                        .uniq()
-                        .valueOf();
+                .map(function(filepath) {
+                    return grunt.file.expand({
+                        filter: function(src) {
+                            return grunt.file.isFile(src) && (path.extname(src) === '.json' || path.extname(src) === '.yml');
+                        }
+                    }, grunt.config.process(filepath));
+                })
+                .flatten()
+                .uniq()
+                .valueOf();
 
             options.data = {};
             datapath.forEach(function (file) {
@@ -84,5 +85,9 @@ module.exports = function(grunt) {
             // Print a success message.
             grunt.log.writeln('Rendered HTML file to "' + file.dest + '"');
         });
-    });
+    }
+
+    grunt.registerMultiTask('tmpl_render', 'Renders a template to plain HTML', renderTmpl);
+    //aliasing
+    grunt.registerMultiTask('render', 'Renders a template to plain HTML', renderTmpl);
 };
