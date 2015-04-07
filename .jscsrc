@@ -6,6 +6,6 @@
     "disallowSpacesInFunctionExpression": null,
 	"disallowMultipleLineBreaks": null,
 	"requireLineFeedAtFileEnd": null,
-	"requireMultipleVarDecl", "onevar",
+	"requireMultipleVarDecl": "onevar",
     "excludeFiles": ["node_modules/**", "tmp/**"]
 }
