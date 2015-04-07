@@ -183,6 +183,8 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+0.1.0 - Refined docs and code validation
+
 0.0.3 - Renamed to `tmpl_render` keeping `render` as alias name
 
 0.0.2 - Docs and tests
