@@ -1,7 +1,7 @@
 {
   "name": "grunt-render",
   "description": "Template agnostic HTML rendering task",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "homepage": "https://github.com/dwightjack/grunt-render",
   "author": {
     "name": "Marco Solazzi",
