@@ -18,6 +18,7 @@ module.exports = function(grunt) {
 
 
     function renderTmpl() {
+        /*jshint validthis:true */
         var options = this.options({
                 render: _.identity,
                 data: {},
@@ -82,12 +83,14 @@ module.exports = function(grunt) {
 
             // Write joined contents to destination filepath.
             grunt.file.write(file.dest, contents);
+
             // Print a success message.
             grunt.log.writeln('Rendered HTML file to "' + file.dest + '"');
         });
     }
 
     grunt.registerMultiTask('tmpl_render', 'Renders a template to plain HTML', renderTmpl);
+
     //aliasing
     grunt.registerMultiTask('render', 'Renders a template to plain HTML', renderTmpl);
 };
