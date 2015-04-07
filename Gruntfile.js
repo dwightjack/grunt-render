@@ -33,7 +33,7 @@ module.exports = function(grunt) {
         },
 
         // Configuration to be run (and then tested).
-        render: {
+        tmpl_render: {
             default_options: {
                 options: {
                 },
