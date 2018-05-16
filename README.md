@@ -2,6 +2,8 @@
 
 > Template agnostic HTML rendering task
 
+:exclamation: :exclamation:**MAINTAINERS WANTED: I'm no longer maintaining this project. Feel free to drop me a line if you're interested in keeping up the development** :exclamation: :exclamation:
+
 ## Getting Started
 This plugin requires Grunt `~0.4.5`
 
