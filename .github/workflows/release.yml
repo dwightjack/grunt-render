@@ -1,5 +1,4 @@
-ame: NPM publish CD workflow
-
+name: NPM publish CD workflow
 on:
   release:
     # This specifies that the build will be triggered when we publish a release
