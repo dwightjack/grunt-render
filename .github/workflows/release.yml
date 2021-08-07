@@ -30,7 +30,6 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-      - run: npm ci
       - run: git config --global user.name "GitHub Release bot"
       - run: git config --global user.email "github-release-bot@codeful.dev"
       # upgrade npm version in package.json to the tag used in the release.
