@@ -6,7 +6,7 @@ on:
 
 jobs:
   publish:
-    if: github.event.release.target_commitish == 'main' || github.event.release.target_commitish == 'next'
+    if: github.event.release.target_commitish == 'master' || github.event.release.target_commitish == 'develop'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
