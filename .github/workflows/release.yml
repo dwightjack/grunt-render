@@ -30,6 +30,8 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
+      - run: git config --global user.name "GitHub Release Bot"
+      - run: git config --global user.email "github-release-bot@codeful.dev"
       # upgrade npm version in package.json to the tag used in the release.
       - run: npm version ${{ github.event.release.tag_name }} -m "Bump version %s"
       - name: Publish next release
@@ -51,3 +53,4 @@ jobs:
           delete-branch: true
           title: Release v${{ github.event.release.tag_name }}
           reviewers: dwightjack
+          committer: GitHub Release Bot <github-release-bot@codeful.dev>
