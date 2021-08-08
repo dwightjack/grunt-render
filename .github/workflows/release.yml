@@ -30,8 +30,6 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-      - run: git config --global user.name "GitHub Release bot"
-      - run: git config --global user.email "github-release-bot@codeful.dev"
       # upgrade npm version in package.json to the tag used in the release.
       - run: npm version ${{ github.event.release.tag_name }} -m "Bump version %s"
       - name: Publish next release
@@ -46,6 +44,10 @@ jobs:
         env:
           # Use a token to publish to NPM. See below for how to set it up
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - run: git push
-        env:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Release Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          branch: release/v${{ github.event.release.tag_name }}
+          delete-branch: true
+          title: Release v${{ github.event.release.tag_name }}
+          reviewers: dwightjack
